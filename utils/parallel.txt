@@ -1,0 +1,122 @@
+const array = [
+    "DO SLEEP(2)",
+    "CREATE TABLE Students (id INT,name VARCHAR(50),age INT,grade VARCHAR(10));",
+    "DO SLEEP(3)",
+    "INSERT INTO Students (id, name, age, grade) VALUES (1, 'John Doe', 18, 'A'),(2, 'Jane Smith', 17, 'B'),(3, 'Michael Johnson', 19, 'A'); ;",
+    "DO SLEEP(4)",
+    "DELETE FROM Students",
+    "DO SLEEP(5)"
+];  
+
+
+function parallelExecution(pool,queryArray) {
+    return new Promise((resolve,reject)=>{
+    let counter = 0;
+    for(const query of queryArray){
+        const start = Date.now();
+        
+        pool.query(query,(err,row,field)=>{
+            const end = Date.now();
+            const elaspedTime = (end-start)/1000;
+           if(err){
+            console.log("error in parallel",err);
+           }else{
+            console.log("query execution start time:(parallel) ", start);
+            console.log("query executed was ", query);
+            console.log(row);
+            console.log("elaspedTime par = ",elaspedTime);
+            counter++;
+            if (counter === queryArray.length) {
+                resolve();
+              }
+           }
+        });        
+    }
+    });
+    
+  }
+  
+  
+
+RESULT:
+
+query execution start time:(parallel)  1686396655763
+ResultSetHeader {
+  fieldCount: 0,
+  affectedRows: 0,
+  insertId: 0,
+  info: '',
+  serverStatus: 2,
+  warningStatus: 0
+}
+query executed was  CREATE TABLE Students (id INT,name VARCHAR(50),age INT,grade VARCHAR(10));
+elaspedTime par =  1.047
+query execution start time:(parallel)  1686396655766
+ResultSetHeader {
+  fieldCount: 0,
+  affectedRows: 0,
+  insertId: 0,
+  info: '',
+  serverStatus: 34,
+  warningStatus: 0
+}
+query executed was  DELETE FROM Students
+elaspedTime par =  1.057
+query execution start time:(parallel)  1686396655764
+ResultSetHeader {
+  fieldCount: 0,
+  affectedRows: 3,
+  insertId: 0,
+  info: 'Records: 3  Duplicates: 0  Warnings: 0',
+  serverStatus: 2,
+  warningStatus: 0
+}
+query executed was  INSERT INTO Students (id, name, age, grade) VALUES (1, 'John Doe', 18, 'A'),(2, 'Jane Smith', 17, 'B'),(3, 'Michael Johnson', 19, 'A'); ;
+elaspedTime par =  1.243
+query execution start time:(parallel)  1686396655757
+ResultSetHeader {
+  fieldCount: 0,
+  affectedRows: 0,
+  insertId: 0,
+  info: '',
+  serverStatus: 2,
+  warningStatus: 0
+}
+query executed was  DO SLEEP(2)
+elaspedTime par =  2.028
+query execution start time:(parallel)  1686396655764
+ResultSetHeader {
+  fieldCount: 0,
+  affectedRows: 0,
+  insertId: 0,
+  info: '',
+  serverStatus: 2,
+  warningStatus: 0
+}
+query executed was  DO SLEEP(3)
+elaspedTime par =  3.022
+query execution start time:(parallel)  1686396655766
+ResultSetHeader {
+  fieldCount: 0,
+  affectedRows: 0,
+  insertId: 0,
+  info: '',
+  serverStatus: 2,
+  warningStatus: 0
+}
+query executed was  DO SLEEP(4)
+elaspedTime par =  4.019
+query execution start time:(parallel)  1686396655766
+ResultSetHeader {
+  fieldCount: 0,
+  affectedRows: 0,
+  insertId: 0,
+  info: '',
+  serverStatus: 2,
+  warningStatus: 0
+}
+query executed was  DO SLEEP(5)
+elaspedTime par =  5.019
+Execution Completed Successfully
+
+

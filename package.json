@@ -1,0 +1,20 @@
+{
+  "name": "backEnd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "database-main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node database-main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "js-md5": "^0.7.3",
+    "mysql2": "^3.3.3",
+    "nodemon": "^2.0.22"
+  }
+}

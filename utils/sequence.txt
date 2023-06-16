@@ -1,0 +1,56 @@
+const array = [
+    "SELECT SLEEP(2)",
+    "SELECT SLEEP(3)",
+    "SELECT SLEEP(5)"
+];  
+
+
+function sequencialExecution(pool, queryArray) {
+    return new Promise((resolve, reject) => {
+      pool.getConnection((error, connection) => {
+        if (error) {
+          console.log("error", error);
+          reject(error);
+          connection.release();
+        } else {
+          let counter = 0; 
+  
+          for (const query of queryArray) {
+            const start = Date.now();
+            connection.query(query, (err, rows, field) => {
+              const end = Date.now();
+              const elapsedTime = (end - start) / 1000;
+              if (err) {
+                console.log("error executing queries", err);
+              } 
+              
+              console.log("query execution start time (sequence):", start);
+              console.log(rows);
+              console.log("elapsedTime seq =", elapsedTime);
+              counter++;
+  
+              if (counter === queryArray.length) {
+                connection.release();
+                resolve();
+              }
+  
+            });
+          }
+         
+        }
+      });
+    });
+  }
+
+
+RESULT:
+
+query execution start time (sequence): 1686390166718
+[ { 'sleep(2)': 0 } ]
+elapsedTime seq = 2.008
+query execution start time (sequence): 1686390166718
+[ { 'sleep(3)': 0 } ]
+elapsedTime seq = 5.01
+query execution start time (sequence): 1686390166718
+[ { 'sleep(5)': 0 } ]
+elapsedTime seq = 10.013

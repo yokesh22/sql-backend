@@ -1,0 +1,4 @@
+To Run the database service, give following command
+
+"npm install" - to install node modules
+cd/Backend/ "nodemon" - to run database service
